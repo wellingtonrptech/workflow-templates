@@ -1,11 +1,23 @@
-name: Deploy
+name: Deploy Workflow
 
-runs:
-  using: "composite"
-  steps:
-    - name: Upload .ipa to App Store
-      run: |
-        fastlane deliver --ipa "./build/MyApp.ipa" --username "${{ secrets.APP_STORE_CONNECT_API_KEY }}" --password "${{ secrets.FASTLANE_PASSWORD }}" --app_identifier "com.example.myapp" --team_id "${{ secrets.FASTLANE_TEAM_ID }}" --itc_team_id "${{ secrets.FASTLANE_ITC_TEAM_ID }}"
-      # Faz o upload do arquivo .ipa para a App Store usando o Fastlane.
-      # O identificador do aplicativo (--app_identifier) deve ser substituído pelo identificador do seu aplicativo na App Store.
-      # Os segredos são referenciados diretamente usando a sintaxe ${{ secrets.SECRET_NAME }}.
+on:
+  workflow_call:  # Permite que este workflow seja chamado por outro workflow
+
+jobs:
+  deploy:
+    runs-on: macos-latest  # Necessário para o envio de aplicativos iOS
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # Faz o checkout do código do repositório
+
+      - name: Install Fastlane
+        run: |
+          sudo gem install fastlane -NV  # Instala o Fastlane
+
+      - name: Upload .ipa to App Store
+        run: |
+          fastlane deliver --ipa "./build/MyApp.ipa" --username "${{ secrets.APP_STORE_CONNECT_API_KEY }}" --password "${{ secrets.FASTLANE_PASSWORD }}" --app_identifier "com.example.myapp" --team_id "${{ secrets.FASTLANE_TEAM_ID }}" --itc_team_id "${{ secrets.FASTLANE_ITC_TEAM_ID }}"
+        # Faz o upload do arquivo .ipa para a App Store usando o Fastlane.
+        # O identificador do aplicativo (--app_identifier) deve ser substituído pelo identificador do seu aplicativo na App Store.
+        # Os segredos são referenciados diretamente usando a sintaxe ${{ secrets.SECRET_NAME }}.

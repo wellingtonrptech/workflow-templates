@@ -1,10 +1,21 @@
-name: Build
+name: Build Workflow
 
-runs:
-  using: "composite"
-  steps:
-    - name: Prepare .ipa for upload
-      run: |
-        fastlane gym --scheme "MyApp" --output_directory "./build" --output_name "MyApp.ipa"
-      # Usa o Fastlane para construir o arquivo .ipa do aplicativo.
-      # O nome do esquema (--scheme) deve ser substituído pelo nome do esquema do seu aplicativo.
+on:
+  workflow_call:  # Permite ser chamado por outro workflow
+
+jobs:
+  build:
+    runs-on: macos-latest  # Necessário para build de iOS com Fastlane
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # Faz o checkout do código
+
+      - name: Install Fastlane
+        run: |
+          sudo gem install fastlane -NV  # Instala o Fastlane
+
+      - name: Prepare .ipa for upload
+        run: |
+          fastlane gym --scheme "MyApp" --output_directory "./build" --output_name "MyApp.ipa"
+        # Usa o Fastlane para construir o arquivo .ipa do aplicativo.
+        # O nome do esquema (--scheme) deve ser substituído pelo nome do esquema do seu aplicativo.

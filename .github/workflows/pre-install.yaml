@@ -1,13 +1,18 @@
-name: Pre-Install
+name: Pre-Install Workflow
 
-runs:
-  using: "composite"
-  steps:
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '2.7'  # Configura o Ruby na versão 2.7
-      # O Fastlane é uma ferramenta escrita em Ruby, então precisamos garantir que uma versão compatível do Ruby esteja instalada.
+on:
+  workflow_call:  # Permite que este workflow seja chamado por outro workflow
 
-    - name: Install Fastlane
-      run: gem install fastlane  # Instala o Fastlane, uma ferramenta para automação de deploys
+jobs:
+  preinstall:
+    runs-on: ubuntu-latest  # Pode rodar em um ambiente Ubuntu ou macOS (dependendo do seu uso)
+
+    steps:
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'  # Configura o Ruby na versão 2.7
+        # O Fastlane é uma ferramenta escrita em Ruby, então precisamos garantir que uma versão compatível do Ruby esteja instalada.
+
+      - name: Install Fastlane
+        run: gem install fastlane  # Instala o Fastlane, uma ferramenta para automação de deploys
