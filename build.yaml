@@ -1,0 +1,10 @@
+name: Build
+
+runs:
+  using: "composite"
+  steps:
+    - name: Prepare .ipa for upload
+      run: |
+        fastlane gym --scheme "MyApp" --output_directory "./build" --output_name "MyApp.ipa"
+      # Usa o Fastlane para construir o arquivo .ipa do aplicativo.
+      # O nome do esquema (--scheme) deve ser substituído pelo nome do esquema do seu aplicativo.

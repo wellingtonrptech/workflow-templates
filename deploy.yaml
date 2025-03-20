@@ -1,0 +1,11 @@
+name: Deploy
+
+runs:
+  using: "composite"
+  steps:
+    - name: Upload .ipa to App Store
+      run: |
+        fastlane deliver --ipa "./build/MyApp.ipa" --username "${{ secrets.APP_STORE_CONNECT_API_KEY }}" --password "${{ secrets.FASTLANE_PASSWORD }}" --app_identifier "com.example.myapp" --team_id "${{ secrets.FASTLANE_TEAM_ID }}" --itc_team_id "${{ secrets.FASTLANE_ITC_TEAM_ID }}"
+      # Faz o upload do arquivo .ipa para a App Store usando o Fastlane.
+      # O identificador do aplicativo (--app_identifier) deve ser substituído pelo identificador do seu aplicativo na App Store.
+      # Os segredos são referenciados diretamente usando a sintaxe ${{ secrets.SECRET_NAME }}.
