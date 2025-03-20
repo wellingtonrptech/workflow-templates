@@ -3,6 +3,9 @@ name: Pre-Install
 runs:
   using: "composite"
   steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
